@@ -2,7 +2,7 @@
 import OptionButton from "./OptionButton";
 export default function Options() {
     return (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 lg:gap-2">
             <OptionButton icon="search" action={() => console.log("Search")} />
             <OptionButton icon="grid_view" action={() => console.log("Grid View")} />
             <OptionButton icon="map" action={() => console.log("Map")} />
