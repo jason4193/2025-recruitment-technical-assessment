@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import freeRoomsLogo from '../assets/freeRoomsLogo.png';
+import freeRoomsLogo from '@/../public/assets/freeRoomsLogo.png';
 
 export default function HomeIcon() {
     // when the user clicks on the logo, the page will redirect to the home page
