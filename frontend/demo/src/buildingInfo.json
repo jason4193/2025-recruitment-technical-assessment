@@ -2,7 +2,7 @@
     {
       "name": "AGSM",
       "rooms_available": 9,
-      "building_file": "/assets/agsm.webp"
+      "building_picture": "/assets/agsm.webp"
     },
     {
       "name": "Ainsworth Building",
@@ -48,5 +48,9 @@
       "name": "Computer Science & Eng (K17)",
       "rooms_available": 7,
       "building_picture": "/assets/cseBuilding.webp"
+    },
+    {
+      "name": "Test Building with no image",
+      "rooms_available": 0
     }
 ]

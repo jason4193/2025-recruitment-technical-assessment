@@ -10,7 +10,7 @@ export default function BuildingSection() {
                 name={buildingInfo[i].name}
                 rooms_available={buildingInfo[i].rooms_available}
                 // if the building picture is not provided, use the default picture
-                building_picture={buildingInfo[i].building_picture || "/assets/cseBuilding.webp"}
+                building_picture={buildingInfo[i].building_picture || "/assets/freeroomsDoorClosed.png"}
             />
         );
     }
