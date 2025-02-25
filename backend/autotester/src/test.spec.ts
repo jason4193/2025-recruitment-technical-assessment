@@ -18,6 +18,26 @@ describe("Task 1", () => {
       expect(response.body).toStrictEqual({ msg: "Alpha Alfredo" });
     });
 
+    it("example3", async () => {
+      const response = await getTask1("Skibidi   spaghetti");
+      expect(response.body).toStrictEqual({ msg: "Skibidi Spaghetti" });
+    });
+
+    it("example4", async () => {
+      const response = await getTask1("Skibidi spaghetti    ");
+      expect(response.body).toStrictEqual({ msg: "Skibidi Spaghetti" });
+    });
+
+    it("example5", async () => {
+      const response = await getTask1("Skibidi___Spaghetti  ");
+      expect(response.body).toStrictEqual({ msg: "Skibidi Spaghetti" });
+    });
+
+    it("example6", async () => {
+      const response = await getTask1("1234");
+      expect(response.status).toBe(400);
+    });
+
     it("error case", async () => {
       const response = await getTask1("");
       expect(response.status).toBe(400);

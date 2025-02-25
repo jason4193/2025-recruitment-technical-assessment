@@ -44,8 +44,40 @@ def parse():
 # Takes in a recipeName and returns it in a form that 
 def parse_handwriting(recipeName: str) -> Union[str | None]:
 	# TODO: implement me
-	return recipeName
+	def is_replaceable(char):
+		return char in ['-', '_']
 
+	newRecipeName = ''
+	capNext = True
+
+	for index in range(len(recipeName)):
+		# if the char is replaceable, replace it with a space and reset the capNext
+		if is_replaceable(recipeName[index]) and capNext != True:
+			newRecipeName += ' '
+			capNext = True
+		# if the char is a space, add it to the newRecipeName and reset the capNext
+		if recipeName[index] == ' ':
+			# if the previous letter is also a space, skip this space
+			if capNext != True:
+				newRecipeName += recipeName[index]
+				capNext = True
+		# if the char is a letter, add it to the newRecipeName based on the capNext
+		if recipeName[index].isalpha():
+			if capNext:
+				newRecipeName += recipeName[index].upper()
+				capNext = False
+			else:
+				newRecipeName += recipeName[index].lower()
+		
+	# if the newRecipeName is empty, return None
+	if newRecipeName == '':
+		return None
+
+	# if the newRecipeName has a space at the end, remove it
+	if newRecipeName[-1] == ' ':
+		newRecipeName = newRecipeName[:-1]
+		
+	return newRecipeName
 
 # [TASK 2] ====================================================================
 # Endpoint that adds a CookbookEntry to your magical cookbook
