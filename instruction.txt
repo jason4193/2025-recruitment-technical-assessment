@@ -1,0 +1,28 @@
+# Devsoc Submcommittee Recruitment Task
+
+## Frontend Task
+I have recreated the Freerooms website based on the given design image.
+These are the frameworks and libraries I have used:
+- React
+- NextJs
+- TailwindCSS
+- Google Fonts Material Icons
+
+To run the project, follow these steps:
+1. Clone the repository
+2. Redirect to `/frontend/demo` directory
+3. Run `npm install` to install the dependencies
+4. Run `npm run start` to start the server
+5. Open `http://localhost:3000` in your browser
+
+In the demonstration, I have replicated the design image as closely as possible.
+The layout is responsive based on the screen size which fits the design images.
+The website are still not fully functional but with React and NextJs frameworks,
+it is easy to add functionalities to the website in the future.
+The website are built with reusable components in /src/components directory,
+this makes it easier to maintain each element on the page.
+The building info are stored in a JSON file called `buildingInfo.json` in /src directory.
+By adding new building info to the JSON file,
+the website will automatically generate the new building card on the page with the same design.
+
+
