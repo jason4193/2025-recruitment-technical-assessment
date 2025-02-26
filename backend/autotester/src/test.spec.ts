@@ -216,5 +216,56 @@ describe("Task 3", () => {
       const resp3 = await getTask3("Skibidi");
       expect(resp3.status).toBe(200);
     });
+
+    it("Skibidi Spaghetti Recipe", async () => {
+      const recipes = [
+        {
+          type: "recipe",
+          name: "Skibidi Spaghetti",
+          requiredItems: [
+            { name: "Pork Minced", quantity: 3 },
+            { name: "Pasta", quantity: 1 },
+            { name: "Tomato", quantity: 2 },
+          ],
+        },
+        {
+          type: "recipe",
+          name: "Pork Minced",
+          requiredItems: [
+            { name: "Pork", quantity: 2 },
+            { name: "Pepper", quantity: 1 },
+          ],
+        },
+        {
+          type: "recipe",
+          name: "Pasta",
+          requiredItems: [
+            { name: "Flour", quantity: 3 },
+            { name: "Egg", quantity: 1 },
+          ],
+        },
+      ];
+
+      const ingredients = [
+        { type: "ingredient", name: "Pork", cookTime: 5 },
+        { type: "ingredient", name: "Pepper", cookTime: 3 },
+        { type: "ingredient", name: "Flour", cookTime: 0 },
+        { type: "ingredient", name: "Tomato", cookTime: 2 },
+      ];
+
+      for (const ingredient of ingredients) {
+        console.log(ingredient);
+        const resp = await postEntry(ingredient);
+        expect(resp.status).toBe(200);
+      }
+
+      for (const recipe of recipes) {
+        const resp = await postEntry(recipe);
+        expect(resp.status).toBe(200);
+      }
+
+      const resp = await getTask3("Skibidi Spaghetti");
+      expect(resp.status).toBe(200);
+    });
   });
 });

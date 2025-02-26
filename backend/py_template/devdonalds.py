@@ -21,6 +21,12 @@ class Recipe(CookbookEntry):
 class Ingredient(CookbookEntry):
 	cook_time: int
 
+@dataclass
+class RecipeSummary():
+	name: str
+	cookTime: int
+	ingredients: List[RequiredItem]
+
 # ==== Helper Functions =======================================================
 def create_recipe(name, requiredItems, cookbook):
 	# Create list of required items
@@ -34,7 +40,6 @@ def create_recipe(name, requiredItems, cookbook):
 	# Create a new recipe
 	recipe = Recipe(name, requiredItemsList)
 	cookbook[name] = recipe
-	print(cookbook)
 	return 'Recipe added', 200
 
 def create_ingredient(name, cookTime, cookbook):
@@ -44,10 +49,25 @@ def create_ingredient(name, cookTime, cookbook):
 	# Create a new ingredient
 	ingredient = Ingredient(name, cookTime)
 	cookbook[name] = ingredient
-	print(cookbook)
 	return 'Ingredient added', 200
 
+def rec_summary(name, cookbook):
+	if name not in cookbook:
+		raise NameError('Entry not found')
+	
+	if isinstance(cookbook[name], Ingredient):
+		return name
 
+	result = []
+	for item in cookbook[name].required_items:
+		for i in range(item.quantity):
+			sub_result = rec_summary(item.name, cookbook)
+			if isinstance(sub_result, list):
+				result.extend(sub_result)
+			else:
+				result.append(sub_result)
+
+	return result
 
 # =============================================================================
 # ==== HTTP Endpoint Stubs ====================================================
@@ -114,7 +134,6 @@ def create_entry():
 		cookbook = {}
 	# Get the entry from the request
 	entry = request.get_json()
-	print(entry)
 	# Check if the entry is unique
 	if entry['name'] in cookbook:
 		return 'Entry already exists', 400
@@ -126,14 +145,43 @@ def create_entry():
 	else:
 		return 'Invalid entry type', 400
 
-
 # [TASK 3] ====================================================================
 # Endpoint that returns a summary of a recipe that corresponds to a query name
 @app.route('/summary', methods=['GET'])
 def summary():
-	# TODO: implement me
-	return 'not implemented', 500
+	global cookbook
+	# Preconditions
+	if cookbook is None:
+		return 'Cookbook is empty', 400
+	# Get the query name from the request
+	query_name = request.args.get('name')
+	if query_name not in cookbook:
+		return 'Entry not found', 400
+	if not isinstance(cookbook[query_name], Recipe):
+		return 'Entry is not a recipe', 400
+	
+	# Recursively parse the recipe ingredients
+	try:
+		result = rec_summary(query_name, cookbook)
+	except:
+		return 'Error in parsing recipe', 400
+	print(result)
 
+	# Create the summary
+	cookTime = 0
+	ingredients = []
+	ingredientsMap = {}
+	for item in result:
+		cookTime += cookbook[item].cook_time
+		if item in ingredientsMap:
+			ingredientsMap[item] += 1
+		else:
+			ingredientsMap[item] = 1
+	for key in ingredientsMap:
+		ingredients.append(RequiredItem(key, ingredientsMap[key]))
+	summary = RecipeSummary(query_name, cookTime, ingredients)
+	print(summary)
+	return jsonify(summary), 200
 
 # =============================================================================
 # ==== DO NOT TOUCH ===========================================================
