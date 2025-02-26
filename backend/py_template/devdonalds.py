@@ -21,6 +21,33 @@ class Recipe(CookbookEntry):
 class Ingredient(CookbookEntry):
 	cook_time: int
 
+# ==== Helper Functions =======================================================
+def create_recipe(name, requiredItems, cookbook):
+	# Create list of required items
+	requiredItemsList = []
+	item_names = set()
+	for item in requiredItems:
+		if item['name'] in item_names:
+			return 'Duplicate item name found', 400
+		item_names.add(item['name'])
+		requiredItemsList.append(RequiredItem(item['name'], item['quantity']))
+	# Create a new recipe
+	recipe = Recipe(name, requiredItemsList)
+	cookbook[name] = recipe
+	print(cookbook)
+	return 'Recipe added', 200
+
+def create_ingredient(name, cookTime, cookbook):
+	# Check if the cookTime is a positive integer
+	if not isinstance(cookTime, int) or cookTime < 0:
+		return 'Invalid cook time', 400
+	# Create a new ingredient
+	ingredient = Ingredient(name, cookTime)
+	cookbook[name] = ingredient
+	print(cookbook)
+	return 'Ingredient added', 200
+
+
 
 # =============================================================================
 # ==== HTTP Endpoint Stubs ====================================================
@@ -43,7 +70,6 @@ def parse():
 # [TASK 1] ====================================================================
 # Takes in a recipeName and returns it in a form that 
 def parse_handwriting(recipeName: str) -> Union[str | None]:
-	# TODO: implement me
 	def is_replaceable(char):
 		return char in ['-', '_']
 
@@ -83,8 +109,22 @@ def parse_handwriting(recipeName: str) -> Union[str | None]:
 # Endpoint that adds a CookbookEntry to your magical cookbook
 @app.route('/entry', methods=['POST'])
 def create_entry():
-	# TODO: implement me
-	return 'not implemented', 500
+	global cookbook
+	if cookbook is None:
+		cookbook = {}
+	# Get the entry from the request
+	entry = request.get_json()
+	print(entry)
+	# Check if the entry is unique
+	if entry['name'] in cookbook:
+		return 'Entry already exists', 400
+	# Check if the entry is valid type
+	if entry["type"] == "recipe":
+		return create_recipe(entry['name'], entry['requiredItems'], cookbook)
+	elif entry["type"] == "ingredient":
+		return create_ingredient(entry['name'], entry['cookTime'], cookbook)
+	else:
+		return 'Invalid entry type', 400
 
 
 # [TASK 3] ====================================================================

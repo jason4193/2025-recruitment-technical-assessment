@@ -113,6 +113,45 @@ describe("Task 2", () => {
       });
       expect(resp3.status).toBe(400);
     });
+
+    it("Recipe with multiple required items", async () => {
+      const resp = await putTask2({
+        "type": "recipe",
+        "name": "Sussy Salad",
+        "requiredItems": [
+          {
+            "name": "Mayonaise",
+            "quantity": 1
+          },
+          {
+            "name": "Lettuce",
+            "quantity": 3
+          },
+        ]
+      });
+      expect(resp.status).toBe(200);
+    });
+    it("Recipe with duplicated required items", async () => {
+      const resp = await putTask2({
+        "type": "recipe",
+        "name": "Burger",
+        "requiredItems": [
+          {
+            "name": "Beef",
+            "quantity": 1
+          },
+          {
+            "name": "Lettuce",
+            "quantity": 3
+          },
+          {
+            "name": "Beef",
+            "quantity": 3
+          },
+        ]
+      });
+      expect(resp.status).toBe(400);
+    });
   });
 });
 
