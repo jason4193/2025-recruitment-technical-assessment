@@ -26,3 +26,35 @@ By adding new building info to the JSON file,
 the website will automatically generate the new building card on the page with the same design.
 
 
+## Backend Task
+I have completed the 3 tasks in the backend section, and here are the details of each tasks
+
+For Task 1:
+I have create a function to check the given recipeName parameter is a valid recipe name,
+letter by letter. 
+I set up two conditions to handle the replaceable letter and space in the recipe name.
+To handle the Uppercase and Lowercase logic,
+I used the capNext variable as a flag to check if the next letter need to be capitalized.
+I also make two condition to handle when the parsed name is empty 
+or the last letter is space.
+
+For Task 2:
+I based on the idea of Factory Design Pattern to create the function.
+Inside the function, I will check the given type of the object,
+and call the corresponding create function to create the entry.
+This design provide a way to modularise the function, and make it easier to 
+add new entry type or maintain the existing entry type in the future.
+The entry create function are located on the Helper Function section of the code.
+
+For Task 3:
+I used the concept of recursion to solve the problem.
+Knowing that inside a recipe, there are multiple required items.
+For each required item, it could be either an ingredient
+or another recipe which contains other required items.
+This structure is similar to a tree structure,
+where the recipe is the tree node, and ingredient is the leaf node.
+
+For recursive function, my approach is search all the Ingredient inside the recipe tree.
+Stored every ingredient in a list and return the list for further summary.
+Therefore, the base case of the recursion will be when the node is an ingredient,
+
